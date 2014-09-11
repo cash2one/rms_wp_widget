@@ -13,4 +13,8 @@ Version: 0.1
 define( 'EGGRMS__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 //add setting menu
 require_once (EGGRMS__PLUGIN_DIR."egg_rms_wp_widget_setting.php");
+
+
+
+
 ?>
