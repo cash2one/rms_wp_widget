@@ -14,6 +14,12 @@ define( 'EGGRMS__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 //add setting menu
 require_once (EGGRMS__PLUGIN_DIR."egg_rms_wp_widget_setting.php");
 
+function after_content($content){
+	return $content." <h2>you maybe like these articles</h2>";
+
+}
+
+add_filter("the_content","after_content",20);
 
 
 
