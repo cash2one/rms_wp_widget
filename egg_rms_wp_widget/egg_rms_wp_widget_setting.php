@@ -24,21 +24,18 @@ function wp_egg_rms_options(){
                         if(!update_option("EGG_DATE_RANGE_OF_RMS",$wp_egg_rms_date_range_new))
                                 $message='Update Fail';
 								
-				$wp_egg_rms_domain = get_option("EGG_DOMAIN_OF_RMS");
-                $wp_egg_rms_domain_new = $_POST['EGG_DOMAIN_OF_RMS'];
+				$wp_egg_rms_domain = get_option("EGG_RMS_DOMAIN");
+                $wp_egg_rms_domain_new = $_POST['EGG_RMS_DOMAIN'];
                 if($wp_egg_rms_domain != $wp_egg_rms_domain_new)
-                        if(!update_option("EGG_DOMAIN_OF_RMS",$wp_egg_rms_domain_new))
+                        if(!update_option("EGG_RMS_DOMAIN",$wp_egg_rms_domain_new))
                                 $message='Update Fail';
                 //update_egg_rms();
 				*/
 				update_post_option("EGG_NUMBER_OF_RMS");
 				update_post_option("EGG_DATE_RANGE_OF_RMS");
-				update_post_option("EGG_DOMAIN_OF_RMS");
+				update_post_option("EGG_RMS_DOMAIN");
 				update_post_option("EGG_TARGET_DOMAIN");
-				update_post_option("EGG_MAX_POST_NUMBER");
-				
-				
-				
+				update_post_option("EGG_MAX_POST_NUMBER");				
                 echo '<div class="updated"><strong><p>'. $message . '</p></strong></div>';
         }
 		
@@ -88,9 +85,9 @@ function wp_egg_rms_options(){
 			</tr>
 		<tr>
 		<th>
-		<label for='EGG_DOMAIN_OF_RMS'>Egg RMS Domain </label>
+		<label for='EGG_RMS_DOMAIN'>Egg RMS Domain </label>
 		</th>
-		<td><input id='EGG_DOMAIN_OF_RMS' type='text' name='EGG_DOMAIN_OF_RMS' value='<?php echo get_option("EGG_DOMAIN_OF_RMS");?>'/>
+		<td><input id='EGG_RMS_DOMAIN' type='text' name='EGG_RMS_DOMAIN' value='<?php echo get_option("EGG_RMS_DOMAIN");?>'/>
 		</td>
 		<tr>
 		<tr>
