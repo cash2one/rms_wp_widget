@@ -1,32 +1,38 @@
 ﻿<?php  
-//error_log(time()."   ".current_time("timestamp"));
+//var_dump(time()."   ".current_time("timestamp"));
+
 //	wp_clear_scheduled_hook("egg_rms_push_article");
-//	error_log("remove scheduled");
+//	var_dump("remove scheduled");
 if(!wp_next_scheduled("egg_rms_push_article")){
  wp_schedule_event(time(), "hourly", "egg_rms_push_article" );
  add_action("egg_rms_push_article", "egg_push_function");
- error_log("add scheduled");
+ var_dump("add scheduled");
  
 }else{
 //	wp_clear_scheduled_hook("egg_rms_push_article");
-//	error_log("remove scheduled");
+//	var_dump("remove scheduled");
 }
 
-//error_log($_SERVER);
-//error_log("".json_encode(wp_get_schedules()));
+//var_dump($_SERVER);
+//var_dump("".json_encode(wp_get_schedules()));
+
+
 function egg_push_function(){
-error_log("start:");
+var_dump("start:");
 	
 	$EGG_MAX_POST_NUMBER=get_option("EGG_MAX_POST_NUMBER");
 	if(empty($EGG_MAX_POST_NUMBER) || $EGG_MAX_POST_NUMBER<1 || $EGG_MAX_POST_NUMBER>20){
 		$EGG_MAX_POST_NUMBER=5;
 	}
-	error_log("egg_push_function list:");
-	$recent_posts=wp_get_recent_posts( array("numberposts"=>1) ) ;
-	error_log("recent_posts".json_encode($recent_posts));
+	var_dump("egg_push_function list:");
+	global $wpdb;
+	$maxrow=$wpdb->get_results( "SELECT max(id) as max_postid FROM $wpdb->posts" );
+	//var_dump("maxrow: ".$maxrow[0]->max_postid);
 	
-	
-	$NewestID=$recent_posts[0]["ID"];
+	$NewestID=0;
+	if(count($maxrow)>0){
+		$NewestID=$maxrow[0]->max_postid;
+	}
 	$wp_egg_target_domain = get_option("EGG_TARGET_DOMAIN");
 	if(empty($wp_egg_target_domain)){
 		$wp_egg_target_domain=$_SERVER["HTTP_HOST"];
@@ -42,8 +48,8 @@ error_log("start:");
 	}
 	$CurrentID=$EGG_SE_MAX_POST_ID+1;
 	
-	error_log("Max ID: ".$EGG_SE_MAX_POST_ID."  Recent POSTS:".count($recent_posts));
-	error_log("Max ID: ".$EGG_SE_MAX_POST_ID."  NewestID:".$recent_posts[0]["ID"]);
+	var_dump("Max ID: ".$EGG_SE_MAX_POST_ID."  Recent POSTS:".count($recent_posts));
+	var_dump("Max ID: ".$EGG_SE_MAX_POST_ID."  NewestID:".$recent_posts[0]["ID"]);
 	//return;
 	$Posts=array();
 	if(count($recent_posts)>0 && $EGG_SE_MAX_POST_ID<$recent_posts[0]["ID"]){
@@ -64,19 +70,20 @@ error_log("start:");
 			$count+=1;
 			$CurrentID+=1;
 		}		
-		//error_log("post data: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxd".json_encode($Posts).'current id:'.$CurrentID);
+		var_dump("post: count. ".$count);
+		//var_dump("post data: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxd".json_encode($Posts).'current id:'.$CurrentID);
 		if(count($Posts)<=0){
-			error_log("no article to posts~");
+			var_dump("no article to posts~");
 			return;
 		}else{
 			set_max_post_id($CurrentID-1);
 		
 		}
 		$post_data=array("posts"=>json_encode($Posts),"authdomain"=>$wp_egg_target_domain);
-		//error_log($post_data);
+		//var_dump($post_data);
 		
 		$posturl="http://".$postdomain."/pluginpost";
-		error_log($posturl);
+		var_dump($posturl);
 		$ch = curl_init();
 		/*$header=array(
 			'Content-Type: application/x-www-form-urlencoded'.//json',
@@ -91,8 +98,8 @@ error_log("start:");
 		curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($post_data));
 		$output = curl_exec($ch);
 		curl_close($ch);
-		error_log($output);	
-		//error_log($Posts);
+		var_dump($output);	
+		//var_dump($Posts);
 	}
 }
 function get_max_post_id($rmsdomain,$targetdomain){
@@ -109,7 +116,7 @@ function get_max_post_id($rmsdomain,$targetdomain){
 		$output = curl_exec($ch);
 		curl_close($ch);
 		$ret=json_decode($output);
-		error_log("MaxID:".$output);
+		var_dump("REMOTE MaxID:".$output);
 		if(!empty($ret) && $ret->error_code==0 && $ret->ret_value>=$EGG_SE_MAX_POST_ID){
 			$EGG_SE_MAX_POST_ID=$ret->ret_value;
 			update_option("EGG_SE_MAX_POST_ID",$EGG_SE_MAX_POST_ID);
