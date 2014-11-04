@@ -35,7 +35,8 @@ function wp_egg_rms_options(){
 				update_post_option("EGG_DATE_RANGE_OF_RMS");
 				update_post_option("EGG_RMS_DOMAIN");
 				update_post_option("EGG_TARGET_DOMAIN");
-				update_post_option("EGG_MAX_POST_NUMBER");				
+				update_post_option("EGG_MAX_POST_NUMBER");	
+				update_post_option("EGG_RMS_ADVERTISER_ID");
                 echo '<div class="updated"><strong><p>'. $message . '</p></strong></div>';
         }
 		
@@ -105,6 +106,15 @@ function wp_egg_rms_options(){
 		</td>
 		<td>
 		Default is 5. 
+		</td>
+		<tr>
+		<tr>
+		<th>
+		<label for='EGG_RMS_ADVERTISER_ID'>Advertiser ID</label>
+		</th>
+		<td><input id='EGG_RMS_ADVERTISER_ID' type='text' name='EGG_RMS_ADVERTISER_ID' value='<?php echo get_option("EGG_RMS_ADVERTISER_ID");?>'/>
+		</td>
+		<td>
 		</td>
 		<tr>
 		</table>
