@@ -1,0 +1,4 @@
+name = Egg Rms Drupal Module
+description = The Egg's Recommand System Module
+core = 7.x
+configure = admin/config/content/eggrms

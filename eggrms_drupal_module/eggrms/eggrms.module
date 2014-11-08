@@ -1,0 +1,6 @@
+<?php
+require_once('egg_rms_drupal.php');
+
+
+
+?>
