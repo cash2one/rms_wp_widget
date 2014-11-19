@@ -83,6 +83,7 @@ function eggrms_block_view($delta = '') {
 		}
 	
 		$block['content'] =theme('eggrms_footer',array('url'=>$url,'title'=>$title,'content'=>$content));
+		//$block['content']=print_r($node,true);
 		//$block['content']=strip_tags(buildfooter1($url,$content,$title));
 	   //print_r("dee<sr");
 	  }  
@@ -112,4 +113,9 @@ function eggrms_permission() {
   );
 }
 require_once(dirname(__FILE__).'/egg_rms_drupal_configuration.php');
+require_once(dirname(__FILE__).'/egg_rms_drupal_push.php');
+
+
+
+
 ?>

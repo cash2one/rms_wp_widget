@@ -20,6 +20,8 @@ function buildiframe($url,$content,$title){
 	//print_r("233< div > ");
 	$content=htmlspecialchars(trim(strip_tags($content)));
 	$content=str_replace(PHP_EOL,"",$content);
+	$content=str_replace('\''," ",$content);
+	$title=str_replace('\''," ",$title);
 	$iframe="<iframe style='width:600px;height:200px;border:none;' id='egg_rms_iframe' onload='submit();' src='about:blank'>";
 	$form="<form action=\"".$url."\" method=\"post\" target=\"_self\" id=\"postData_form\">";
 	$form.="<input id=\"_rms_content\" name=\"content\" type=\"hidden\" value=\"".htmlspecialchars(trim(strip_tags($content)))."\"/>";
