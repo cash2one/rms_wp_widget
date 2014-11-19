@@ -95,7 +95,18 @@ function eggrms_form($form, &$form_state) {
     '#description' => t('the advertiser id generate by RMS'),
     '#required' => TRUE,
   );
-
+	$form['button1'] = array(
+    '#type' => 'submit',
+    '#value' => 'Reset the Post ID',
+    '#submit' => array('egg_rms_reset_postid')
+  );
   return system_settings_form($form);
+}
+function egg_rms_reset_postid(){
+	$max_post_id=variable_get("EGG_SE_MAX_POST_ID");
+	if($max_post_id>0){
+		variable_set("EGG_SE_MAX_POST_ID",0);
+	}
+
 }
 ?>
