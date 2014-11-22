@@ -7,13 +7,17 @@ global $post;
 //$pt=strip_tags($post->post_content);
 $title=$post->post_title;
 $wp_egg_rms_number = get_option("EGG_NUMBER_OF_RMS");
-$wp_egg_rms_domain='106.185.30.33:3000';
+
 $wp_egg_rms_date_range = get_option("EGG_DATE_RANGE_OF_RMS");
+$wp_egg_rms_domain='106.185.30.33:3000';
 if(!empty(get_option("EGG_DOMAIN_OF_RMS"))){
 $wp_egg_rms_domain=get_option("EGG_DOMAIN_OF_RMS");
 }
-
-$url="http://".$wp_egg_rms_domain."/showwidget?index=theegg&type=article&domain=cosmopolitan.com.hk&maxc=".$wp_egg_rms_number;
+$wp_egg_target_domain = get_option("EGG_TARGET_DOMAIN");
+if(empty($wp_egg_target_domain)){
+	$wp_egg_target_domain=$_SERVER["HTTP_HOST"];
+}
+$url="http://".$wp_egg_rms_domain."/showwidget?index=theegg&type=article&domain=".$wp_egg_target_domain."&maxc=".$wp_egg_rms_number;
 if($wp_egg_rms_date_range>1){
    $url=$url."&range=".$wp_egg_rms_date_range;
 }

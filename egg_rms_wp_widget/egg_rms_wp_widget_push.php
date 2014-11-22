@@ -16,6 +16,10 @@ if(!wp_next_scheduled("egg_rms_push_article")){
 }
 
 add_action( 'save_post', 'push_on_save', 10 );
+add_action( 'update_post', 'push_on_save' );
+add_action( 'publish_post', 'push_on_save' );
+add_action( 'delete_post', 'push_on_delete' );
+add_action( 'trash_post', 'push_on_delete' );
 
 function egg_push_function(){
 error_log("start:");
@@ -108,13 +112,13 @@ function post_articles($post_data,$post_url){
 		curl_close($ch);
 		error_log($output);	
 }
-function push_on_save($post_id,$post,$updated){
+function push_on_save($post_id){
 	error_log("  current update post id:".$post_id." updated:".$updated);
-	if(!empty($updated) && !$updated){
-		//return;
-	}
+	echo "post on save";
+	$post=get_post($post_id);
 	if($post->post_status!='publish'){
-		//return;
+	    echo "post on save but not publish";
+		return;
 	}
 		
 	$EGG_MAX_POST_NUMBER=get_option("EGG_MAX_POST_NUMBER");
@@ -131,7 +135,7 @@ function push_on_save($post_id,$post,$updated){
 		$wp_egg_target_domain=$_SERVER["HTTP_HOST"];
 	}
 	$EGG_SE_MAX_POST_ID=get_max_post_id($postdomain,$wp_egg_target_domain);
-	error_log("remote_max_posted_id".$EGG_SE_MAX_POST_ID."  current update post id:".$post_id." updated:".$updated);
+	
 	if(empty($EGG_SE_MAX_POST_ID)){
 		$EGG_SE_MAX_POST_ID=0;
 	}
@@ -156,6 +160,20 @@ function push_on_save($post_id,$post,$updated){
 		//error_log($Posts);
 	
 }
+function push_on_delete($postId) { 
+   $postdomain=get_option("EGG_RMS_DOMAIN");
+	if(empty($postdomain)){
+		$postdomain="106.185.30.33:3000";			
+	}
+	$post_url="http://".$postdomain."/delete_cms_article";
+	$wp_egg_target_domain = get_option("EGG_TARGET_DOMAIN");
+	if(empty($wp_egg_target_domain)){
+		$wp_egg_target_domain=$_SERVER["HTTP_HOST"];
+	}
+	$post_data=array("authdomain"=>$wp_egg_target_domain,"targetdomain"=>$wp_egg_target_domain,"url"=>get_permalink($postId));
+	post_articles($post_data,$post_url);
+}
+
 function format_article($p,$wp_egg_target_domain){
 	if(empty($p)){return array();}
 	$first_img=catch_first_image($p->post_content);
@@ -178,7 +196,7 @@ function get_max_post_id($rmsdomain,$targetdomain){
 		$ret=json_decode($output);
 		error_log("REMOTE MaxID:".$output);
 		if(!empty($ret) && $ret->error_code==0 ){
-			if($ret->ret_value>=$EGG_SE_MAX_POST_ID){
+			if($ret->ret_value>=$EGG_SE_MAX_POST_ID || $ret->ret_value>1){
 				$EGG_SE_MAX_POST_ID=$ret->ret_value;
 			}
 			if($ret->ret_value==-1){
