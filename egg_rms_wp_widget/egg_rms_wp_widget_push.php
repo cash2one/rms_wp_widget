@@ -177,8 +177,13 @@ function get_max_post_id($rmsdomain,$targetdomain){
 		curl_close($ch);
 		$ret=json_decode($output);
 		error_log("REMOTE MaxID:".$output);
-		if(!empty($ret) && $ret->error_code==0 && $ret->ret_value>=$EGG_SE_MAX_POST_ID){
-			$EGG_SE_MAX_POST_ID=$ret->ret_value;
+		if(!empty($ret) && $ret->error_code==0 ){
+			if($ret->ret_value>=$EGG_SE_MAX_POST_ID){
+				$EGG_SE_MAX_POST_ID=$ret->ret_value;
+			}
+			if($ret->ret_value==-1){
+				$EGG_SE_MAX_POST_ID=0;
+			}
 			update_option("EGG_SE_MAX_POST_ID",$EGG_SE_MAX_POST_ID);
 		}
 		return $EGG_SE_MAX_POST_ID;

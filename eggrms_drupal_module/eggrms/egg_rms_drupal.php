@@ -72,6 +72,10 @@ function eggrms_block_view($delta = '') {
 		$block['subject'] = '';//t('Recommand Articles');
 		$nid=arg(1);
 		$node=node_load($nid);
+		if(empty($node) || $node->status!=NODE_PUBLISHED){
+			watchdog("egg_rms_error_log","node not found or not publish: ".$nid);
+			return;
+		}
 		$content=print_r($node->body['und'][0]['value'],true);
 		$title=print_r($node->title,true);
 		$wp_egg_rms_number = variable_get("EGG_NUMBER_OF_RMS",5);

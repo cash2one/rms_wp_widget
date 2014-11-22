@@ -38,7 +38,12 @@ function wp_egg_rms_options(){
 				update_post_option("EGG_MAX_POST_NUMBER");	
 				update_post_option("EGG_RMS_ADVERTISER_ID");
                 echo '<div class="updated"><strong><p>'. $message . '</p></strong></div>';
-        }
+        }else if($_POST['reset_egg_se_max_id']){
+			update_option("EGG_SE_MAX_POST_ID",0);
+			
+			echo '<div class="updated"><strong><p>'. $message . '： Recrawl All Posts</p></strong></div>';
+		
+		}
 		
 		
 ?>
@@ -118,6 +123,9 @@ function wp_egg_rms_options(){
 		</td>
 		<tr>
 		</table>
+		<p class="submit">
+          <input type="submit" name="reset_egg_se_max_id" value="Recrawl All Posts" />
+        </p>
         <p class="submit">
           <input type="submit" name="update_egg_rms_option" value="Update Options" />
         </p>
