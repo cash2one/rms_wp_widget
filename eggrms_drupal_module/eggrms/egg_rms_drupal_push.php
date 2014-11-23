@@ -125,6 +125,18 @@ function eggrms_node_update($node) {
      //watchdog('eggrms_cron old',json_encode($loaded_node,JSON_UNESCAPED_UNICODE));
 	 push_on_save($node);
 }
+function eggrms_node_delete($node){
+	$nid=$node->nid;
+	$EGG_SE_MAX_POST_ID=variable_get("EGG_SE_MAX_POST_ID",0);
+	if($nid>0 && $nid<$EGG_SE_MAX_POST_ID){
+	//delete 
+		
+	
+	}
+
+
+}
+
 function push_on_save($node){
 	$post_id=$node->nid;
 
@@ -172,7 +184,7 @@ function format_article($p,$wp_egg_target_domain){
 	return $a;
 }
 function get_max_post_id($rmsdomain,$targetdomain){
-		$EGG_SE_MAX_POST_ID=variable_get("EGG_SE_MAX_POST_ID");
+		$EGG_SE_MAX_POST_ID=variable_get("EGG_SE_MAX_POST_ID",0);
 		$ch = curl_init();
 		$url="http://".$rmsdomain."/maxpostid?domain=".$targetdomain;		
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
@@ -186,8 +198,13 @@ function get_max_post_id($rmsdomain,$targetdomain){
 		curl_close($ch);
 		$ret=json_decode($output);
 		error_log("REMOTE MaxID:".$output);
-		if(!empty($ret) && $ret->error_code==0 && $ret->ret_value>=$EGG_SE_MAX_POST_ID){
-			$EGG_SE_MAX_POST_ID=$ret->ret_value;
+		if(!empty($ret) && $ret->error_code==0 ){
+			if($ret->ret_value>=$EGG_SE_MAX_POST_ID || $ret->ret_value>1){
+				$EGG_SE_MAX_POST_ID=$ret->ret_value;
+			}
+			if($ret->ret_value==-1){
+				$EGG_SE_MAX_POST_ID=0;
+			}
 			variable_set("EGG_SE_MAX_POST_ID",$EGG_SE_MAX_POST_ID);
 		}
 		watchdog("eggrms_cron","max se post id:{$EGG_SE_MAX_POST_ID}");
