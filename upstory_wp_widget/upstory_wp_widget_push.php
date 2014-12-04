@@ -14,6 +14,7 @@ if(!wp_next_scheduled("upstory_push_article")){
 //	wp_clear_scheduled_hook("upstory_push_article");
 //	error_log("remove scheduled");
 }
+add_action("upstory_upload_articles", "upstory_push_function");
 
 add_action( 'save_post', 'push_on_save', 10 );
 add_action( 'update_post', 'push_on_save' );
@@ -42,9 +43,9 @@ error_log("start:");
 		$wp_upstory_target_domain=$_SERVER["HTTP_HOST"];
 	}
 	$postdomain=get_option("UPSTORY_DOMAIN");
-		if(empty($postdomain)){
-			$postdomain="106.185.30.33:3000";			
-		}
+	if(empty($postdomain)){
+		$postdomain="106.185.30.33:3000";			
+	}
 	$UPSTORY_SE_MAX_POST_ID=get_max_post_id($postdomain,$wp_upstory_target_domain);
 	
 	if(empty($UPSTORY_SE_MAX_POST_ID)){

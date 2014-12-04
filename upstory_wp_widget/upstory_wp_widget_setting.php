@@ -38,11 +38,15 @@ function wp_upstory_options(){
 				update_post_option("UPSTORY_MAX_POST_NUMBER");	
 				update_post_option("upstory_ADVERTISER_ID");
                 echo '<div class="updated"><strong><p>'. $message . '</p></strong></div>';
-        }else if($_POST['reset_UPSTORY_se_max_id']){
+        }else if($_POST['reset_upstory_se_max_id']){
 			update_option("UPSTORY_SE_MAX_POST_ID",0);
 			
 			echo '<div class="updated"><strong><p>'. $message . '： Recrawl All Posts</p></strong></div>';
 		
+		}else if($_POST['upload_manully']){
+			//require_once(UPSTORY__PLUGIN_DIR.'upstory_wp_widget_push.php')
+			//upstory_push_function();
+			do_action("upstory_upload_articles");
 		}
 		
 		
@@ -123,11 +127,15 @@ function wp_upstory_options(){
 		</td>
 		<tr>
 		</table>
-		<p class="submit">
-          <input type="submit" name="reset_UPSTORY_se_max_id" value="Recrawl All Posts" />
-        </p>
+		
         <p class="submit">
           <input type="submit" name="update_upstory_option" value="Update Options" />
+        </p>
+		<p class="submit">
+          <input type="submit" name="reset_upstory_se_max_id" value="Recrawl All Posts" />
+        </p>
+		<p class="submit">
+          <input type="submit" name="upload_manully" value="upload manully" />
         </p>
       </form>
     </div>
