@@ -13,7 +13,7 @@
 function upstoryrms_help($path, $arg) {
   switch ($path) {
     case "admin/help#upstoryrms":
-      return '<p>' . t("The Upstory Recommand System Module") . '</p>';
+      return '<p>' . t("The Upstory Recommender System Module") . '</p>';
       break;
   }
 } 
@@ -36,7 +36,7 @@ function upstoryrms_contents(){
   //Get all posts from one week ago to the present.
   $end_time = time();
 
-  //Use Database API to retrieve Egg recommand articles.
+  //Use Database API to retrieve Upstory recommand articles.
   $query = db_select('node', 'n')
     ->fields('n', array('nid', 'title', 'created'))
     ->condition('status', 1) //Published.
@@ -50,9 +50,9 @@ function upstoryrms_contents(){
  * Implements hook_block_info().
  */
 function upstoryrms_block_info() {
-  $blocks['eggrms'] = array(
+  $blocks['upstoryrms'] = array(
     // The name that will appear in the block list.
-    'info' => t('Egg Recommand Articles'),
+    'info' => t('Upstory Recommend Articles'),
     // Default setting.
     'cache' => DRUPAL_NO_CACHE,
 	'body[format]'=>'full_html',
@@ -69,7 +69,7 @@ function upstoryrms_block_view($delta = '') {
   
 	$block=array();
 	if(arg(0)=='node' && is_numeric(arg(1))){
-		$block['subject'] = '';//t('Recommand Articles');
+		$block['subject'] = '';//t('Recommend Articles');
 		$nid=arg(1);
 		$node=node_load($nid);
 		if(empty($node) || $node->status!=NODE_PUBLISHED){
@@ -86,7 +86,7 @@ function upstoryrms_block_view($delta = '') {
 		   $url=$url."&range=".$upstory_rms_date_range;
 		}
 	
-		$block['content'] =theme('upstoryrms_footer',array('url'=>$url,'title'=>$title,'content'=>$content));
+		$block['content'] ="12345";//theme('upstory_rms_footer',array('url'=>$url,'title'=>$title,'content'=>$content));
 		//$block['content']=print_r($node,true);
 		//$block['content']=strip_tags(buildfooter1($url,$content,$title));
 	   //print_r("dee<sr");
@@ -97,10 +97,10 @@ function upstoryrms_block_view($delta = '') {
  //implementation of hook_theme
 function upstoryrms_theme() {
   return array(
-    'upstoryrms_footer' => array(
+    'upstory_rms_footer' => array(
       'variables' => array('url'=>NULL,'title'=>NULL,'content'=>NULL),
-	  'path'=>drupal_get_path('module', 'eggrms'),
-      'template' => 'upstoryrms_footer',
+	  'path'=>drupal_get_path('module', 'upstoryrms'),
+      'template' => 'upstory_rms_footer',
 	  'render element' => 'content'
     ),
   );
@@ -111,8 +111,8 @@ function upstoryrms_theme() {
  */
 function upstoryrms_permission() {
   return array(
-    'access eggrms content' => array(
-      'title' => t('Access content for the Egg Rms module'),
+    'access upstoryrms content' => array(
+      'title' => t('Access content for the Upstory Rms module'),
     )
   );
 }

@@ -6,18 +6,18 @@
 function upstoryrms_menu() {
   $items = array();
 
-  $items['admin/config/content/eggrms'] = array(
-    'title' => 'Egg Recommand System Setting',
-    'description' => 'Configuration for Egg recommand articles module',
+  $items['admin/config/content/upstoryrms'] = array(
+    'title' => 'Upstory Recommender System Setting',
+    'description' => 'Configuration for Upstory recommand articles module',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('upstoryrms_form'),
     'access arguments' => array('access administration pages'),
     'type' => MENU_NORMAL_ITEM,
   );
-   $items['admin/people/permissions/eggrms'] = array(
-        'title' => 'Egg Rms',
+   $items['admin/people/permissions/upstoryrms'] = array(
+        'title' => 'Upstory Rms',
         'page callback' => '_upstoryrms_page',
-        'access arguments' => array('access eggrms content'),
+        'access arguments' => array('access upstoryrms content'),
         'type' => MENU_NORMAL_ITEM, 
       );
 
@@ -25,7 +25,7 @@ function upstoryrms_menu() {
 }
 
 /**
- * Page callback: Egg recommand articles settings
+ * Page callback: Upstory recommand articles settings
  *
  * @see upstoryrms_menu()
  */

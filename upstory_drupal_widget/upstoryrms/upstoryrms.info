@@ -1,0 +1,4 @@
+name = Upstory Rms Drupal Module
+description = The Upstory's Recommender System Module
+core = 7.x
+configure = admin/config/content/upstoryrms
